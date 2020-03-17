@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Blog Name</title>
+  <title>key dakedo</title>
   <subtitle>Blog subtitle</subtitle>
-  <id>http://blog.url.com/</id>
-  <link href="http://blog.url.com/"/>
-  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <id>https://github.com/maymo3/key-dakedo/</id>
+  <link href="https://github.com/maymo3/key-dakedo/"/>
+  <link href="https://github.com/maymo3/key-dakedo/feed.xml" rel="self"/>
   <updated>2020-03-13T09:00:00+09:00</updated>
   <author>
-    <name>Blog Author</name>
+    <name>maymo3</name>
   </author>
   <entry>
     <title>middleman-article</title>
-    <link rel="alternate" href="http://blog.url.com/Middleman/middleman-article.html"/>
-    <id>http://blog.url.com/Middleman/middleman-article.html</id>
+    <link rel="alternate" href="https://github.com/Middleman/middleman-article.html"/>
+    <id>https://github.com/Middleman/middleman-article.html</id>
     <published>2020-03-13T09:00:00+09:00</published>
     <updated>2020-03-17T04:52:53+09:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>maymo3</name>
     </author>
     <content type="html">&lt;ol id="markdown-toc"&gt;
   &lt;li&gt;&lt;a href="#erbslim" id="markdown-toc-erbslim"&gt;erbをslimにする&lt;/a&gt;&lt;/li&gt;
@@ -183,12 +183,12 @@ layoutsディレクトリの中に新しくarticle.slimを作る。（名前は�
   </entry>
   <entry>
     <title>middleman-setting</title>
-    <link rel="alternate" href="http://blog.url.com/Middleman/middleman-setting.html"/>
-    <id>http://blog.url.com/Middleman/middleman-setting.html</id>
+    <link rel="alternate" href="https://github.com/Middleman/middleman-setting.html"/>
+    <id>https://github.com/Middleman/middleman-setting.html</id>
     <published>2020-03-12T09:00:00+09:00</published>
     <updated>2020-03-17T04:52:44+09:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>maymo3</name>
     </author>
     <content type="html">&lt;ol id="markdown-toc"&gt;
   &lt;li&gt;&lt;a href="#gem" id="markdown-toc-gem"&gt;gemとして入れた便利機能を使う設定&lt;/a&gt;&lt;/li&gt;
@@ -379,12 +379,12 @@ layoutsディレクトリの中に新しくarticle.slimを作る。（名前は�
   </entry>
   <entry>
     <title>middleman-introduction</title>
-    <link rel="alternate" href="http://blog.url.com/Middleman/middleman-introduction.html"/>
-    <id>http://blog.url.com/Middleman/middleman-introduction.html</id>
+    <link rel="alternate" href="https://github.com/Middleman/middleman-introduction.html"/>
+    <id>https://github.com/Middleman/middleman-introduction.html</id>
     <published>2020-03-11T09:00:00+09:00</published>
     <updated>2020-03-17T04:53:43+09:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>maymo3</name>
     </author>
     <content type="html">&lt;p&gt;&lt;img src="/Middleman/middleman-introduction/introduction01.png" alt="" /&gt;&lt;/p&gt;
 
@@ -476,12 +476,12 @@ ipアドレスが設定してある時は&lt;code&gt;http://192.168.33.10:4567/&
   </entry>
   <entry>
     <title>keylayout-uninstall</title>
-    <link rel="alternate" href="http://blog.url.com/Mac/keylayout-uninstall.html"/>
-    <id>http://blog.url.com/Mac/keylayout-uninstall.html</id>
+    <link rel="alternate" href="https://github.com/Mac/keylayout-uninstall.html"/>
+    <id>https://github.com/Mac/keylayout-uninstall.html</id>
     <published>2020-03-09T09:00:00+09:00</published>
     <updated>2020-03-16T09:47:14+09:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>maymo3</name>
     </author>
     <content type="html">&lt;p&gt;自分で入れたキー配列が不要になった場合のアンインストール方法。&lt;/p&gt;
 
@@ -526,12 +526,12 @@ ipアドレスが設定してある時は&lt;code&gt;http://192.168.33.10:4567/&
   </entry>
   <entry>
     <title>keylayout-install</title>
-    <link rel="alternate" href="http://blog.url.com/Mac/keylayout-install.html"/>
-    <id>http://blog.url.com/Mac/keylayout-install.html</id>
+    <link rel="alternate" href="https://github.com/Mac/keylayout-install.html"/>
+    <id>https://github.com/Mac/keylayout-install.html</id>
     <published>2020-03-08T09:00:00+09:00</published>
     <updated>2020-03-17T02:34:14+09:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>maymo3</name>
     </author>
     <content type="html">&lt;p&gt;Macではキーボードレイアウト(.keylayout)のファイルを追加することで、元々入っている入力ソース以外にも色々なキーボード配列を使用できる。&lt;/p&gt;
 
@@ -622,12 +622,12 @@ ipアドレスが設定してある時は&lt;code&gt;http://192.168.33.10:4567/&
   </entry>
   <entry>
     <title>ukelele-keylayout02</title>
-    <link rel="alternate" href="http://blog.url.com/Ukelele/ukelele-keylayout02.html"/>
-    <id>http://blog.url.com/Ukelele/ukelele-keylayout02.html</id>
+    <link rel="alternate" href="https://github.com/Ukelele/ukelele-keylayout02.html"/>
+    <id>https://github.com/Ukelele/ukelele-keylayout02.html</id>
     <published>2018-03-20T09:00:00+09:00</published>
     <updated>2020-03-17T04:32:46+09:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>maymo3</name>
     </author>
     <content type="html">&lt;p&gt;Ukeleleで簡単なキーボードレイアウトを作る記事の後編。&lt;/p&gt;
 

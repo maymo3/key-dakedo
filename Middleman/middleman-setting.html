@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta charset="utf-8"><meta content="ie=edge" http-equiv="X-UA-Compatible"><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"><title>middleman-blogの設定 - key dakedo</title><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="/assets/styles/normalize.css" rel="stylesheet" /><link href="/assets/styles/syntax.css" rel="stylesheet" /><link href="/assets/styles/style.css" rel="stylesheet" /><link href="https://fonts.googleapis.com/css?family=EB+Garamond&amp;display=swap" rel="stylesheet" /><link href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" rel="stylesheet" /><script src="/assets/js/jquery-3.4.1.min.js"></script></head><body><header class="header"><h1 class="logo"><a href="/">key dakedo</a></h1></header><div class="container"><div class="contents"><div class="main" id="main" role="main"><article class="article"><h1>middleman-blogの設定</h1><time>2020-03-12</time><ol id="markdown-toc">
+<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta charset="utf-8"><meta content="ie=edge" http-equiv="X-UA-Compatible"><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"><title>middleman-blogの設定 - key dakedo</title><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="/key-dakedo/assets/styles/normalize.css" rel="stylesheet" /><link href="/key-dakedo/assets/styles/syntax.css" rel="stylesheet" /><link href="/key-dakedo/assets/styles/style.css" rel="stylesheet" /><link href="https://fonts.googleapis.com/css?family=EB+Garamond&amp;display=swap" rel="stylesheet" /><link href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" rel="stylesheet" /><script src="/key-dakedo/assets/js/jquery-3.4.1.min.js"></script></head><body><header class="header"><h1 class="logo"><a href="/">key dakedo</a></h1></header><div class="container"><div class="contents"><div class="main" id="main" role="main"><article class="article"><h1>middleman-blogの設定</h1><time>2020-03-12</time><ol id="markdown-toc">
   <li><a href="#gem" id="markdown-toc-gem">gemとして入れた便利機能を使う設定</a></li>
   <li><a href="#css" id="markdown-toc-css">CSSなどのフォルダが無いので作る</a></li>
   <li><a href="#section" id="markdown-toc-section">ブログについての設定</a></li>
@@ -84,7 +84,7 @@
 <h2 id="section">ブログについての設定</h2>
 <p>以降はconfig.rbにブログとしての設定を加えていく。</p>
 
-<p><img src="/Middleman/middleman-setting/setting02.png" alt="" /></p>
+<p><img src="/key-dakedo/Middleman/middleman-setting/setting02.png" alt="" /></p>
 
 <p>元々<code>activate :blog do |blog|</code>から<code>end</code>の間に設定例が書いてあるので、そのコメントを外して設定内容を書くか、<code>end</code>の前に追記していく。</p>
 
@@ -126,14 +126,14 @@
 <div class="highlight"><pre class="highlight ruby"><code><span class="n">blog</span><span class="p">.</span><span class="nf">sources</span> <span class="o">=</span> <span class="s2">"articles/{category}/{year}-{month}-{day}-{title}.html"</span>
 </code></pre></div><p>にする。</p>
 
-<p><img src="/Middleman/middleman-setting/setting03.png" alt="" /></p>
+<p><img src="/key-dakedo/Middleman/middleman-setting/setting03.png" alt="" /></p>
 
 <p>設定した置き場所とファイル名の形式で、middlemanくんが「これが記事やな」って認識してくれる。</p>
 
 <h2 id="section-2">パーマリンクの設定</h2>
 <p>各記事をあらわすURLの後ろの部分の書式を設定する。</p>
 
-<p><img src="/Middleman/middleman-setting/setting04.png" alt="" /></p>
+<p><img src="/key-dakedo/Middleman/middleman-setting/setting04.png" alt="" /></p>
 
 <p class="code-lang">config.rb 32行目付近</p>
 
@@ -183,7 +183,7 @@
 
 <div class="highlight"><pre class="highlight plaintext"><code>2020-03-08-title1.html.markdown
 </code></pre></div><p>途中の<code>.html</code>を忘れないように注意。</p>
-</article><div class="relateds"><aside class="related"><h2>同じカテゴリの記事</h2><ul><li><a href="/Middleman/middleman-article.html"><img src="/Middleman/middleman-article/article02.png" alt="Article02" /><h3>middleman-blogで記事部分の表示を作る</h3></a></li><li><a href="/Middleman/middleman-introduction.html"><img src="/Middleman/middleman-introduction/introduction01.png" alt="Introduction01" /><h3>middleman-blogを使ってブログを作る</h3></a></li></ul></aside></div><div class="next-prev"><div class="nexts"><span class="arrow">＜</span><span class="next"><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></span></div><div class="prevs"><span class="prev"><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></span><span class="arrow">＞</span></div></div></div><div class="side"><aside class="sideContent"><h2>Categories</h2><ul><li><a href="/categories/middleman.html">Middleman</a></li><li><a href="/categories/mac.html">Mac</a></li><li><a href="/categories/ukelele.html">Ukelele</a></li></ul></aside><aside class="sideContent"><h2>Recent Articles</h2><ol><li><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></li><li><a href="/Middleman/middleman-setting.html">middleman-blogの設定</a></li><li><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></li><li><a href="/Mac/keylayout-uninstall.html">Macから.keylayoutファイルをアンインストールする</a></li><li><a href="/Mac/keylayout-install.html">Macに.keylayoutファイルをインストールする</a></li></ol></aside><aside class="sideToc"><h2>Contents</h2><ol id="markdown-toc">
+</article><div class="relateds"><aside class="related"><h2>同じカテゴリの記事</h2><ul><li><a href="/Middleman/middleman-article.html"><img src="/key-dakedo/Middleman/middleman-article/article02.png" alt="Article02" /><h3>middleman-blogで記事部分の表示を作る</h3></a></li><li><a href="/Middleman/middleman-introduction.html"><img src="/key-dakedo/Middleman/middleman-introduction/introduction01.png" alt="Introduction01" /><h3>middleman-blogを使ってブログを作る</h3></a></li></ul></aside></div><div class="next-prev"><div class="nexts"><span class="arrow">＜</span><span class="next"><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></span></div><div class="prevs"><span class="prev"><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></span><span class="arrow">＞</span></div></div></div><div class="side"><aside class="sideContent"><h2>Categories</h2><ul><li><a href="/categories/middleman.html">Middleman</a></li><li><a href="/categories/mac.html">Mac</a></li><li><a href="/categories/ukelele.html">Ukelele</a></li></ul></aside><aside class="sideContent"><h2>Recent Articles</h2><ol><li><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></li><li><a href="/Middleman/middleman-setting.html">middleman-blogの設定</a></li><li><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></li><li><a href="/Mac/keylayout-uninstall.html">Macから.keylayoutファイルをアンインストールする</a></li><li><a href="/Mac/keylayout-install.html">Macに.keylayoutファイルをインストールする</a></li></ol></aside><aside class="sideToc"><h2>Contents</h2><ol id="markdown-toc">
   <li><a href="#gem" id="markdown-toc-gem">gemとして入れた便利機能を使う設定</a></li>
   <li><a href="#css" id="markdown-toc-css">CSSなどのフォルダが無いので作る</a></li>
   <li><a href="#section" id="markdown-toc-section">ブログについての設定</a></li>
@@ -191,4 +191,4 @@
   <li><a href="#section-2" id="markdown-toc-section-2">パーマリンクの設定</a></li>
   <li><a href="#section-3" id="markdown-toc-section-3">記事ごとに添付ファイルを分けて置く</a></li>
   <li><a href="#markdown" id="markdown-toc-markdown">記事をmarkdownで書く</a></li>
-</ol></aside></div></div></div><div class="top-btn" id="top-btn"><img src="/assets/img/arrow01.png" alt="Arrow01" /></div><footer class="footer"></footer><script src="/assets/js/script.js"></script></body></html>
+</ol></aside></div></div></div><div class="top-btn" id="top-btn"><img src="/key-dakedo/assets/img/arrow01.png" alt="Arrow01" /></div><footer class="footer"></footer><script src="/key-dakedo/assets/js/script.js"></script></body></html>
