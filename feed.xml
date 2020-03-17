@@ -1,0 +1,905 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Blog Name</title>
+  <subtitle>Blog subtitle</subtitle>
+  <id>http://blog.url.com/</id>
+  <link href="http://blog.url.com/"/>
+  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <updated>2020-03-13T09:00:00+09:00</updated>
+  <author>
+    <name>Blog Author</name>
+  </author>
+  <entry>
+    <title>middleman-article</title>
+    <link rel="alternate" href="http://blog.url.com/Middleman/middleman-article.html"/>
+    <id>http://blog.url.com/Middleman/middleman-article.html</id>
+    <published>2020-03-13T09:00:00+09:00</published>
+    <updated>2020-03-17T04:52:53+09:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;ol id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#erbslim" id="markdown-toc-erbslim"&gt;erbをslimにする&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;記事部分のレイアウトファイルを作る&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-1" id="markdown-toc-section-1"&gt;記事部分の構成を書く&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-2" id="markdown-toc-section-2"&gt;目次を入れる&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-3" id="markdown-toc-section-3"&gt;前後の記事を表示する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-4" id="markdown-toc-section-4"&gt;シンタックスハイライト&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul class="tree"&gt;
+  &lt;li class="folder"&gt;source
+    &lt;ul&gt;&lt;li class="file"&gt;index.html.erb&lt;/li&gt;
+        &lt;li class="file"&gt;tag.html.erb&lt;/li&gt;
+        &lt;li&gt;︙&lt;/li&gt;
+        &lt;li class="folder"&gt;layouts
+          &lt;ul&gt;&lt;li class="file"&gt;layout.erb&lt;/li&gt;
+              &lt;li&gt;︙&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;layouts配下にある〇〇.erbが各ページに共通する部分を書くファイル。&lt;br /&gt;
+ここに&lt;code&gt;&amp;lt;%= yield %&amp;gt;&lt;/code&gt;slimだと&lt;code&gt;= yield&lt;/code&gt;などと書くとページごとに違う内容が読み込まれる。&lt;br /&gt;
+source直下にある〇〇.html.erbはその各ページ。&lt;br /&gt;
+元からあるlayout.erbが全てのページに適用される枠組み（例外も指定できる）。&lt;/p&gt;
+
+&lt;h2 id="erbslim"&gt;erbをslimにする&lt;/h2&gt;
+&lt;p&gt;&lt;a href="http://erb2slim.com/"&gt;http://erb2slim.com/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;今回はslimを使いたいので元のlayout.erbを.slimに変換する。&lt;br /&gt;
+2箇所ずつくらいカッコがずれてsyntaxエラー出るので落ち着いて直す。&lt;br /&gt;
+CSSやJavaScriptのファイルは好きな名前で作って元々読み込んでいる部分を書き換える。&lt;br /&gt;
+middlemanでは以下の形で読み込める。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;layout.slim&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight slim"&gt;&lt;code&gt;&lt;span class="c"&gt;/ CSS&lt;/span&gt;
+&lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;stylesheet_link_tag&lt;/span&gt; &lt;span class="s2"&gt;"ファイル名"&lt;/span&gt;
+&lt;span class="c"&gt;/ JavaScript&lt;/span&gt;
+&lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;javascript_include_tag&lt;/span&gt; &lt;span class="s2"&gt;"ファイル名"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;拡張子はいらない。&lt;/p&gt;
+
+&lt;h2 id="section"&gt;記事部分のレイアウトファイルを作る&lt;/h2&gt;
+&lt;p&gt;&lt;img src="/Middleman/middleman-article/article02.png" alt="layout.slimの中にヘッダーやフッターを作り、= yieldでarticle.slimを読み込む。article.slim内で記事や関連記事などの枠組みを作り、= yieldでmarkdown形式の各記事の内容を読み込む" /&gt;
+ざっくりなのでこのままだと構成が破綻しているけれど、上記のようなイメージで記事部分用の枠組みを作る。&lt;br /&gt;
+layoutsディレクトリの中に新しくarticle.slimを作る。（名前は好みで）&lt;/p&gt;
+
+&lt;p&gt;次にどのファイルが記事部分のレイアウトなのか、という設定を書く。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rb 36行目あたり&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# blog.layout = "layout"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;のコメントを外して&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;blog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;layout&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"article"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;に変える。拡張子はいらない。&lt;/p&gt;
+
+&lt;h2 id="section-1"&gt;記事部分の構成を書く&lt;/h2&gt;
+
+&lt;p class="code-lang"&gt;article.slim&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight slim"&gt;&lt;code&gt;&lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;wrap_layout&lt;/span&gt; &lt;span class="ss"&gt;:layout&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="nt"&gt;article&lt;/span&gt;
+  	&lt;span class="nt"&gt;h1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;current_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;title&lt;/span&gt;
+    &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="k"&gt;yield&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;のように&lt;code&gt;= wrap_layout :layout do&lt;/code&gt;以下に記事の構成を書いていく。&lt;br /&gt;
+ここで各記事のFrontmatterに書いた情報を使える。&lt;br /&gt;
+レイアウトから&lt;code&gt;current_article&lt;/code&gt;で現在の記事を呼び出せる。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;時間の取得例&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight slim"&gt;&lt;code&gt;&lt;span class="nt"&gt;time&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;current_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;date&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;strftime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;"%Y年%-m月%-d日"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p class="code-lang"&gt;タイトルの取得例&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight slim"&gt;&lt;code&gt;&lt;span class="nt"&gt;h1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;=&lt;/span&gt;&lt;span class="n"&gt;current_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;title_ja&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;自分は記事のURLには英語のtitleを使って、記事自体の題名は日本語にしたいのでFrontmatterにtitle_jaを追加している。独自に追加した項目は&lt;code&gt;data.〇〇&lt;/code&gt;で呼び出せる&lt;/p&gt;
+
+&lt;h2 id="section-2"&gt;目次を入れる&lt;/h2&gt;
+&lt;p&gt;デフォルトのMarkdownのエンジンはkramdownになっているので、そのままの場合。
+各記事の途中で&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;記事.markdown&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight markdown"&gt;&lt;code&gt;&lt;span class="p"&gt;1.&lt;/span&gt; 何でも良いので文字
+ {:toc}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;とするだけで記事の見出しから目次が生成できる。
+これで作った目次はolリストで&lt;code&gt;markdown-toc&lt;/code&gt;というidが付いているので、それに好きなCSS、JavaScript等適用すれば良い。&lt;/p&gt;
+
+&lt;p&gt;参考：ol要素の入れ子で親の番号を子に割り当てる方法&lt;br /&gt;
+&lt;a href="http://www.koikikukan.com/archives/2014/09/12-015555.php"&gt;http://www.koikikukan.com/archives/2014/09/12-015555.php&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id="section-3"&gt;前後の記事を表示する&lt;/h2&gt;
+&lt;p&gt;&lt;a href="https://github.com/middleman/middleman-blog/issues/79"&gt;https://github.com/middleman/middleman-blog/issues/79&lt;/a&gt;&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;article.slim&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight slim"&gt;&lt;code&gt;&lt;span class="nc"&gt;.next-prev&lt;/span&gt;
+    &lt;span class="nc"&gt;.nexts&lt;/span&gt;
+      &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="n"&gt;next_article&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;current_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;article_next&lt;/span&gt;
+      &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;next_article&lt;/span&gt; &lt;span class="c1"&gt;# 次の記事が存在したら&lt;/span&gt;
+        &lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="nc"&gt;.arrow&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;＜
+        &lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="nc"&gt;.next&lt;/span&gt;
+          &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;link_to&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;next_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;title_ja&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;next_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;url&lt;/span&gt;
+    &lt;span class="nc"&gt;.prevs&lt;/span&gt;
+      &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="n"&gt;prev_article&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;current_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;article_previous&lt;/span&gt;
+      &lt;span class="p"&gt;-&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;prev_article&lt;/span&gt;
+        &lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="nc"&gt;.prev&lt;/span&gt;
+          &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="n"&gt;link_to&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;prev_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;data&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;title_ja&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;prev_article&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;url&lt;/span&gt;
+        &lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="nc"&gt;.arrow&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;＞
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="section-4"&gt;シンタックスハイライト&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href="http://lab.kai-you.net/2015/12/15/middleman-tips/"&gt;http://lab.kai-you.net/2015/12/15/middleman-tips/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;コードを強調表示するgemを入れる。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;Gemfileに追記&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;gem "middleman-syntax"
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p class="code-lang"&gt;ターミナル&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;でgemをインストール。&lt;br /&gt;
+設定で有効にする。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rbに追記&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;activate&lt;/span&gt; &lt;span class="ss"&gt;:syntax&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;次に強調表示用のCSSファイルを作っていく。CSSのディレクトリ（ここではsource/assets/styles）にsyntax.css.erbを作る。（名前は好みで）&lt;/p&gt;
+
+&lt;p&gt;中身は以下のコードを書く。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;syntax.css.erb&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight erb"&gt;&lt;code&gt;&lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="no"&gt;Rouge&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Themes&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ThankfulEyes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:scope&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;'.highlight'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code&gt;ThankfulEyes&lt;/code&gt;のところは好きなテーマを入れる。&lt;br /&gt;
+テーマ一覧&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ThankfulEyes&lt;/li&gt;
+  &lt;li&gt;Colorful&lt;/li&gt;
+  &lt;li&gt;Github&lt;/li&gt;
+  &lt;li&gt;Base16&lt;/li&gt;
+  &lt;li&gt;Base16::Solarized&lt;/li&gt;
+  &lt;li&gt;Base16::Monokai&lt;/li&gt;
+  &lt;li&gt;Monokai&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;各記事内では、markdownエンジンがkramdownの場合、コードブロックは~~~で囲う。ハイライトする言語の指定があるときは、最初の~~~の後に書く。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;記事.markdown&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight markdown"&gt;&lt;code&gt;&lt;span class="p"&gt;~~~&lt;/span&gt;&lt;span class="nl"&gt; erb
+&lt;/span&gt;&lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="no"&gt;Rouge&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Themes&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;ThankfulEyes&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:scope&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="s1"&gt;'.highlight'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class="p"&gt;~~~&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content>
+  </entry>
+  <entry>
+    <title>middleman-setting</title>
+    <link rel="alternate" href="http://blog.url.com/Middleman/middleman-setting.html"/>
+    <id>http://blog.url.com/Middleman/middleman-setting.html</id>
+    <published>2020-03-12T09:00:00+09:00</published>
+    <updated>2020-03-17T04:52:44+09:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;ol id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#gem" id="markdown-toc-gem"&gt;gemとして入れた便利機能を使う設定&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#css" id="markdown-toc-css"&gt;CSSなどのフォルダが無いので作る&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;ブログについての設定&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-1" id="markdown-toc-section-1"&gt;記事を置く場所を変える&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-2" id="markdown-toc-section-2"&gt;パーマリンクの設定&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-3" id="markdown-toc-section-3"&gt;記事ごとに添付ファイルを分けて置く&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#markdown" id="markdown-toc-markdown"&gt;記事をmarkdownで書く&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;ul class="tree"&gt;
+	&lt;li class="folder"&gt;My Project
+		&lt;ul&gt;
+			&lt;li class="file"&gt;Gemfile -------&amp;gt; installするgemの一覧&lt;/li&gt;
+			&lt;li class="file"&gt;Gemfile.lock --&amp;gt; installしたgemの一覧&lt;/li&gt;
+			&lt;li class="file"&gt;config.rb -----&amp;gt; 設定を書く&lt;/li&gt;
+			&lt;li class="folder"&gt;source&lt;/li&gt;
+			&lt;li class="folder"&gt;vendor --------&amp;gt; installしたgemが入る&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;プロジェクトフォルダの中身はこんな感じ。sourceにはhtmlとその進化系、cssとその進化系、javascript、画像、あとレイアウト(〇〇.erb、〇〇.slim)など最終的に変換されて作っているブログの表示内容になるファイルを入れる。&lt;/p&gt;
+
+&lt;p&gt;ここからは設定用のファイルconfig.rbをいじっていく。
+サーバを立ち上げて&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;ターミナル&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;middleman server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;http://localhost:4567/__middleman/config/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;にアクセスすると設定できる対象や拡張機能を確認できる。&lt;/p&gt;
+
+&lt;h2 id="gem"&gt;gemとして入れた便利機能を使う設定&lt;/h2&gt;
+&lt;p class="code-lang"&gt;config.rbに追記&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# 自動読み込みをさせる&lt;/span&gt;
+&lt;span class="n"&gt;activate&lt;/span&gt; &lt;span class="ss"&gt;:livereload&lt;/span&gt;
+&lt;span class="c1"&gt;# slimを読み込む&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'slim'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="css"&gt;CSSなどのフォルダが無いので作る&lt;/h2&gt;
+&lt;p&gt;単独のmiddlemanなら元から作られていたのだけど。&lt;/p&gt;
+
+&lt;ul class="tree"&gt;
+	&lt;li class="folder"&gt;source
+		&lt;ul&gt;
+			&lt;li class="folder"&gt;assets
+				&lt;ul&gt;
+					&lt;li class="folder"&gt;img
+						&lt;ul&gt;
+							&lt;li class="file"&gt;thumbnail01.png&lt;/li&gt;
+							&lt;li&gt;︙&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/li&gt;
+					&lt;li class="folder"&gt;js
+						&lt;ul&gt;
+							&lt;li class="file"&gt;script.js&lt;/li&gt;
+							&lt;li&gt;︙&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/li&gt;
+					&lt;li class="folder"&gt;styles
+						&lt;ul&gt;
+							&lt;li class="file"&gt;style.css.sass&lt;/li&gt;
+							&lt;li&gt;︙&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/li&gt;
+				&lt;/ul&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;まずsourceディレクトリの中に静的ファイルをまとめるassetsディレクトリを作る。その中に画像、JavaScript、CSSのそれぞれのファイルをまとめるimg、js、styles各ディレクトリを作る。&lt;/p&gt;
+
+&lt;p&gt;次に各ディレクトリの名前と場所を設定に追加する。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rbに追記&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:css_dir&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'assets/styles'&lt;/span&gt;
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:js_dir&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'assets/js'&lt;/span&gt;
+&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:images_dir&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'assets/img'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id="section"&gt;ブログについての設定&lt;/h2&gt;
+&lt;p&gt;以降はconfig.rbにブログとしての設定を加えていく。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Middleman/middleman-setting/setting02.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;元々&lt;code&gt;activate :blog do |blog|&lt;/code&gt;から&lt;code&gt;end&lt;/code&gt;の間に設定例が書いてあるので、そのコメントを外して設定内容を書くか、&lt;code&gt;end&lt;/code&gt;の前に追記していく。&lt;/p&gt;
+
+&lt;h2 id="section-1"&gt;記事を置く場所を変える&lt;/h2&gt;
+&lt;p&gt;参考：&lt;a href="http://whiskers.nukos.kitchen/2015/03/02/middleman-blog-article-path.html"&gt;http://whiskers.nukos.kitchen/2015/03/02/middleman-blog-article-path.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;デフォルトだとsouce直下に記事を置くことになり、数が増えてくるとヤバそうなのでsouce内に記事をまとめるディレクトリを作る。&lt;/p&gt;
+
+&lt;ul class="tree"&gt;
+	&lt;li class="folder"&gt;source
+		&lt;ul&gt;
+			&lt;li class="folder"&gt;articles
+				&lt;ul&gt;
+					&lt;li class="folder"&gt;category1
+						&lt;ul&gt;
+							&lt;li class="file"&gt;2020-03-03-post1.html.markdown&lt;/li&gt;
+							&lt;li&gt;︙&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/li&gt;
+					&lt;li class="folder"&gt;category2
+						&lt;ul&gt;
+							&lt;li class="file"&gt;2020-03-05-post2.html.markdown&lt;/li&gt;
+							&lt;li&gt;︙&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/li&gt;
+				&lt;/ul&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ここではarticlesディレクトリの下に各カテゴリのディレクトリをおき、その中に記事を入れる。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rb 34行目付近&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# blog.sources = "{year}-{month}-{day}-{title}.html"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;のコメントを外して&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;blog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;sources&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"articles/{category}/{year}-{month}-{day}-{title}.html"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;にする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Middleman/middleman-setting/setting03.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;設定した置き場所とファイル名の形式で、middlemanくんが「これが記事やな」って認識してくれる。&lt;/p&gt;
+
+&lt;h2 id="section-2"&gt;パーマリンクの設定&lt;/h2&gt;
+&lt;p&gt;各記事をあらわすURLの後ろの部分の書式を設定する。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Middleman/middleman-setting/setting04.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rb 32行目付近&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# blog.permalink = "{year}/{month}/{day}/{title}.html"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;のコメントを外して&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;blog&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;permalink&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;"/{category}/{title}.html"&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;今回は"~/カテゴリ/タイトル"にする。&lt;/p&gt;
+
+&lt;p&gt;以上2つ（記事を置く場所とパーマリンク）の設定で各記事のFrontmatter（後述）でcategoryを指定しなくても、自動でフォルダ名のカテゴリの記事として扱われる。&lt;/p&gt;
+
+&lt;h2 id="section-3"&gt;記事ごとに添付ファイルを分けて置く&lt;/h2&gt;
+&lt;p&gt;例えば記事ごとに画像を分けて置きたい場合。これは特に設定はいらないが、記事と同じディレクトリに、記事と同じ名前のフォルダを作る。&lt;br /&gt;
+記事内で画像だったら&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight markdown"&gt;&lt;code&gt;&lt;span class="p"&gt;![](&lt;/span&gt;&lt;span class="sx"&gt;記事名/ファイル名&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;のように呼び出す。&lt;br /&gt;
+例&lt;/p&gt;
+
+&lt;ul class="tree"&gt;
+	&lt;li class="folder"&gt;articles
+		&lt;ul&gt;
+			&lt;li class="folder"&gt;category1
+				&lt;ul&gt;
+					&lt;li class="folder"&gt;2020-03-12-middleman
+						&lt;ul&gt;
+							&lt;li class="file"&gt;figure01.png&lt;/li&gt;
+							&lt;li&gt;︙&lt;/li&gt;
+						&lt;/ul&gt;
+					&lt;/li&gt;
+					&lt;li class="file"&gt;2020-03-12-middleman.markdown&lt;/li&gt;
+				&lt;/ul&gt;
+			&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;呼び出し時は&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;#[](2020-03-12-middleman/figure01.png)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;みたいな感じ。&lt;/p&gt;
+
+&lt;h2 id="markdown"&gt;記事をmarkdownで書く&lt;/h2&gt;
+&lt;p&gt;だいたい設定もできたところで表示確認用に1、2コ記事をおいておくと良い。適当に見出しの入ってるやつ。&lt;/p&gt;
+
+&lt;p&gt;ここでの設定による記事のファイル名の形式は&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;2020-03-08-title1.html.markdown
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;途中の&lt;code&gt;.html&lt;/code&gt;を忘れないように注意。&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>middleman-introduction</title>
+    <link rel="alternate" href="http://blog.url.com/Middleman/middleman-introduction.html"/>
+    <id>http://blog.url.com/Middleman/middleman-introduction.html</id>
+    <published>2020-03-11T09:00:00+09:00</published>
+    <updated>2020-03-17T04:53:43+09:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;&lt;img src="/Middleman/middleman-introduction/introduction01.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;middlemanとmiddleman-blogというmiddlemanの公式拡張機能を利用して、ブログを作ってみる。&lt;/p&gt;
+
+&lt;ol id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;こんな状況&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-1" id="markdown-toc-section-1"&gt;環境&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-2" id="markdown-toc-section-2"&gt;前準備&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#gemfilegem" id="markdown-toc-gemfilegem"&gt;Gemfileに必要なgemを追加&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-3" id="markdown-toc-section-3"&gt;プレビューできるか確認&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="section"&gt;こんな状況&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;sinatra、Railsを勉強したいけれどその前にワンステップ欲しい&lt;/li&gt;
+  &lt;li&gt;HTML、CSS、JQuery(JavaScript)などを勉強していて、とりあえず自分のサイトを作ってみたい&lt;/li&gt;
+  &lt;li&gt;けど同じHTMLを繰り返しコピペするとかは絶対にやりたくない&lt;/li&gt;
+  &lt;li&gt;お試しなのでお金をかけずに(サーバを借りたりせずに)サイトを公開したい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;→middlemanを使おう！&lt;/p&gt;
+
+&lt;p&gt;初心者が「自分はこう理解した」「こうやってみたらできた」ことを書いていく。&lt;br /&gt;
+賢いやり方や詳しい紹介はもっと他にあると思うが、middlemanって何だ？って感じの人に「こんなことができるんだ」と知ってほしい。&lt;br /&gt;
+あと先人たちの素晴らしい記事にリンクを貼るので、それらの記事が検索上位で見つかるようになってほしい…。&lt;/p&gt;
+
+&lt;p&gt;参考：3回に分けてmiddlemanの使い方が書いてあるページ&lt;br /&gt;
+&lt;a href="http://creator.dwango.co.jp/976.html"&gt;http://creator.dwango.co.jp/976.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id="section-1"&gt;環境&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;CentOS/7&lt;/li&gt;
+  &lt;li&gt;Ruby 2.7.0&lt;/li&gt;
+  &lt;li&gt;middleman 4.6.3&lt;/li&gt;
+  &lt;li&gt;勉強したいのでslim、sass記法(scss記法ではない)を使う&lt;/li&gt;
+  &lt;li&gt;作るもの→このブログ&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id="section-2"&gt;前準備&lt;/h2&gt;
+&lt;p&gt;インストールについては下記のサイトが親切だったのでそちらを参考に。&lt;br /&gt;
+&lt;a href="https://birdwing3.com/201511234/"&gt;https://birdwing3.com/201511234/&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;middleman init &lt;span class="nt"&gt;--template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;blog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;でmiddleman起動した後からのつづき&lt;/p&gt;
+
+&lt;h2 id="gemfilegem"&gt;Gemfileに必要なgemを追加&lt;/h2&gt;
+
+&lt;p class="code-lang"&gt;Gemfileに追記&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight plaintext"&gt;&lt;code&gt;# これらがないとエラーが出る
+gem 'middleman-autoprefixer', '~&amp;gt; 2.7'
+gem 'middleman-cli'
+gem "middleman-core"
+# ファイルを更新したら自動で再読み込みしてくれるやつ
+gem 'middleman-livereload'
+# slimの導入
+gem 'slim'
+# nokogiriの導入
+gem 'nokogiri'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;今回はerbではなくslimで書いていきたいのでslimもリストアップ。&lt;br /&gt;
+記事の一覧表示にサムネイルや記事の冒頭部を表示したい場合はnokogiriも書いておく。&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;install&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;でGemfileの中身をインストールする。&lt;/p&gt;
+
+&lt;p&gt;追加の機能は最初に全部入れなくても、後からGemfileに書いて&lt;code&gt;$bundle install&lt;/code&gt;すればOK。&lt;/p&gt;
+
+&lt;h2 id="section-3"&gt;プレビューできるか確認&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight shell"&gt;&lt;code&gt;&lt;span class="nv"&gt;$ &lt;/span&gt;bundle &lt;span class="nb"&gt;exec &lt;/span&gt;middleman server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;でプレビュー用に用意されたmiddlemanのサーバを起動する。&lt;br /&gt;
+&lt;code&gt;http://localhost:4567/&lt;/code&gt;にアクセスして表示されるか確認。&lt;br /&gt;
+ipアドレスが設定してある時は&lt;code&gt;http://192.168.33.10:4567/&lt;/code&gt;など。&lt;br /&gt;
+&lt;kbd&gt;&lt;kbd class="control"&gt;control&lt;/kbd&gt;+&lt;kbd&gt;C&lt;/kbd&gt;&lt;/kbd&gt;でサーバを閉じる&lt;/p&gt;
+
+&lt;p&gt;自分で設定をいじっていくときは、&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;設定を変える&lt;/li&gt;
+  &lt;li&gt;サーバを起動（この時点で設定がおかしい時はエラーが出る）&lt;/li&gt;
+  &lt;li&gt;変更を加えたページなどの表示を確認&lt;/li&gt;
+  &lt;li&gt;サーバを閉じる&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;の繰り返し。&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>keylayout-uninstall</title>
+    <link rel="alternate" href="http://blog.url.com/Mac/keylayout-uninstall.html"/>
+    <id>http://blog.url.com/Mac/keylayout-uninstall.html</id>
+    <published>2020-03-09T09:00:00+09:00</published>
+    <updated>2020-03-16T09:47:14+09:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;自分で入れたキー配列が不要になった場合のアンインストール方法。&lt;/p&gt;
+
+&lt;ol id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;入力ソースから削除する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-1" id="markdown-toc-section-1"&gt;自分専用にインストールした場合&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#mac" id="markdown-toc-mac"&gt;Mac全体にインストールした場合&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="section"&gt;入力ソースから削除する&lt;/h2&gt;
+
+&lt;p&gt;まずは入力ソースから削除していく。
+システム環境設定からキーボードを選び、入力ソースタブを開く。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-uninstall/00097_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;対象のキーボードを選択して-をクリックする。
+一旦ログアウトしてから再度ログインする。&lt;/p&gt;
+
+&lt;p&gt;次にパソコン内から削除する。
+インストールしたキーボードは以下の場所にある。&lt;/p&gt;
+
+&lt;h2 id="section-1"&gt;自分専用にインストールした場合&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-uninstall/00093_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Macintosh HHD＞ユーザ＞ユーザ名＞ライブラリ＞Keyboard Layouts&lt;br /&gt;
+※ユーザ内のライブラリは非表示なので、以下の方法で開く。
+&lt;a href="https://helpx.adobe.com/jp/x-productkb/global/cpsid_91195.html"&gt;非表示のユーザーライブラリフォルダーにアクセスする方法（Mac OS X 10.7 以降）&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id="mac"&gt;Mac全体にインストールした場合&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-uninstall/00096_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Macintosh HHD＞ライブラリ＞Keyboard Layouts&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-uninstall/00094_key.jpeg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Keyboard Layoutsにある.bundleを右クリックして、ゴミ箱に入れるを選ぶ。
+パスワードを入力して、&lt;kbd&gt;&lt;samp&gt;OK&lt;/samp&gt;&lt;/kbd&gt;をクリックすれば完了。&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>keylayout-install</title>
+    <link rel="alternate" href="http://blog.url.com/Mac/keylayout-install.html"/>
+    <id>http://blog.url.com/Mac/keylayout-install.html</id>
+    <published>2020-03-08T09:00:00+09:00</published>
+    <updated>2020-03-17T02:34:14+09:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;Macではキーボードレイアウト(.keylayout)のファイルを追加することで、元々入っている入力ソース以外にも色々なキーボード配列を使用できる。&lt;/p&gt;
+
+&lt;ol id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;レイアウトをインストールする&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-1" id="markdown-toc-section-1"&gt;入力ソースに追加する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-2" id="markdown-toc-section-2"&gt;文字を入力する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-3" id="markdown-toc-section-3"&gt;文字の位置を調べる&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-4" id="markdown-toc-section-4"&gt;まとめ&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="section"&gt;レイアウトをインストールする&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00028_ipasil.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;FinderでMacintosh HHD＞ライブラリ＞Keyboard Layoutsを開いて&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00024_ipasil.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;.keylayoutのファイルをドラッグ＆ドロップする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00025_ipasil.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;写真のような画面が出るので&lt;kbd&gt;&lt;samp&gt;認証&lt;/samp&gt;&lt;/kbd&gt;をクリック、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00026_ipasil.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;パスワードを入力してから&lt;kbd&gt;&lt;samp&gt;OK&lt;/samp&gt;&lt;/kbd&gt;をクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00027_ipasil.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;一旦ログアウトしてから再度ログインする。&lt;/p&gt;
+
+&lt;h2 id="section-1"&gt;入力ソースに追加する&lt;/h2&gt;
+&lt;p&gt;インストールしたキーボードを入力ソースに追加していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00032_viewer.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00004_viewer.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;［システム環境設定］から［キーボード］を開いて、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00032_ipasil.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;［入力ソース］タブの&lt;kbd&gt;&lt;samp&gt;＋&lt;/samp&gt;&lt;/kbd&gt;をクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00036_ipasil.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;左側をスクロールして、入れた配列の言語を参考にレイアウトを探す。自分で作ったものは一番下のその他に入りやすい。&lt;br /&gt;
+※左下の窓から名前で検索もできる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00035_ipasil.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;追加したいレイアウトを選び、&lt;kbd&gt;&lt;samp&gt;追加&lt;/samp&gt;&lt;/kbd&gt;をクリックする。&lt;/p&gt;
+
+&lt;h2 id="section-2"&gt;文字を入力する&lt;/h2&gt;
+&lt;p&gt;早速入力してみる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00037_ipasil.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;入力メニューから新しいレイアウトを選ぶか、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00050_ipasil_jpeg.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;command+スペースを押して入力ソースを選択する。&lt;/p&gt;
+
+&lt;h2 id="section-3"&gt;文字の位置を調べる&lt;/h2&gt;
+
+&lt;p&gt;文字の配置が分からなくなったときは、キーボードビューアを表示して確認できる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00052_ipasil.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;入力メニューから［キーボードビューアを表示］を選ぶ。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Mac/keylayout-install/00003_viewer.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;予め、［システム環境設定］＞［キーボード］＞［キーボード］タブで「メニューバーにキーボードビューアと絵文字ビューアを表示」にチェックを入れておく必要がある。&lt;/p&gt;
+
+&lt;h2 id="section-4"&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;Macで自由なキーボードレイアウトを使うには&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;.keylayoutファイルを自分で作る or ネット上からダウンロード&lt;/li&gt;
+  &lt;li&gt;Macintosh HHD＞ライブラリ＞Keyboard Layoutsに.keylayoutファイルをコピー&lt;/li&gt;
+  &lt;li&gt;システム環境設定＞キーボード＞入力ソース＞+ から入力ソースに追加する&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+  </entry>
+  <entry>
+    <title>ukelele-keylayout02</title>
+    <link rel="alternate" href="http://blog.url.com/Ukelele/ukelele-keylayout02.html"/>
+    <id>http://blog.url.com/Ukelele/ukelele-keylayout02.html</id>
+    <published>2018-03-20T09:00:00+09:00</published>
+    <updated>2020-03-17T04:32:46+09:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;p&gt;Ukeleleで簡単なキーボードレイアウトを作る記事の後編。&lt;/p&gt;
+
+&lt;p&gt;前編はこちら：&lt;br /&gt;
+&lt;a href="/Ukelele/ukelele-keylayout01.html"&gt;UkeleleでMacのキーボード配列を作る(前編)&lt;/a&gt;&lt;/p&gt;
+
+&lt;ol id="markdown-toc"&gt;
+  &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;配置を編集する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-1" id="markdown-toc-section-1"&gt;デッドキーを作る&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-2" id="markdown-toc-section-2"&gt;出力される文字を設定する&lt;/a&gt;    &lt;ol&gt;
+      &lt;li&gt;&lt;a href="#section-3" id="markdown-toc-section-3"&gt;方法1.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#section-4" id="markdown-toc-section-4"&gt;方法2.&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#shift" id="markdown-toc-shift"&gt;デッドキー+shiftキー&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#section-5" id="markdown-toc-section-5"&gt;修飾キーの固定&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-6" id="markdown-toc-section-6"&gt;配置を終了する&lt;/a&gt;    &lt;ol&gt;
+      &lt;li&gt;&lt;a href="#section-7" id="markdown-toc-section-7"&gt;現在の状態を確認する&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#section-8" id="markdown-toc-section-8"&gt;修飾キーごとのデッドキーの作成&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-9" id="markdown-toc-section-9"&gt;既にあるデッドキーを編集する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-10" id="markdown-toc-section-10"&gt;レイアウトをインストールする&lt;/a&gt;    &lt;ol&gt;
+      &lt;li&gt;&lt;a href="#section-11" id="markdown-toc-section-11"&gt;方法1. 自分専用にインストールする&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="#section-12" id="markdown-toc-section-12"&gt;方法2. ディスクイメージを作る&lt;/a&gt;&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-13" id="markdown-toc-section-13"&gt;レイアウトを有効にする&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-14" id="markdown-toc-section-14"&gt;レイアウトを削除する&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href="#section-15" id="markdown-toc-section-15"&gt;おわり&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id="section"&gt;配置を編集する&lt;/h2&gt;
+&lt;p&gt;まずは配置の編集から。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00102_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;キーボードレイアウト（ここではIPAko_US）をダブルクリックすると、新しいウィンドウが開く。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00079_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Ukeleleでは自分が使っているのハードウェアキーボードに合わせて編集画面が表示される。キーボードの外観はViewメニューからKeyboard Type…を選んで変更可能。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00081_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00082_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Keyboard Typeの一覧をスクロールすると、他にも色々なキーボードが選択できる。&lt;/p&gt;
+
+&lt;h2 id="section-1"&gt;デッドキーを作る&lt;/h2&gt;
+&lt;p&gt;まずはセミコロンキーをデッドキーにしていく。
+手元のキーボードで&lt;kbd&gt;&lt;kbd&gt;;&lt;/kbd&gt;&lt;/kbd&gt;を押すか、編集画面の；をクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00036_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;；が選択され、表示が黄色になった。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00080_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;KeyboardメニューからCreate Dead Key…を選ぶか、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00036_key2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;ツールバーにあるCreateボタンをクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00084_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;元にしたキーボードレイアウトから、既にいくつかのデッドキーが作られているので、三角をクリックするとそれらを選ぶことができる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00083_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;ここではデフォルトの「Dead Key State 0」という名前のまま新しいデッドキーを作る。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00083_key2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;terminatorはオプションで、次に押されたキーが空のときに出力される文字の設定。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00083_key3.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;今回は必要ないので、空のまま&lt;kbd&gt;&lt;samp&gt;OK&lt;/samp&gt;&lt;/kbd&gt;をクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00037_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;デッドキーの状態になった。&lt;/p&gt;
+
+&lt;h2 id="section-2"&gt;出力される文字を設定する&lt;/h2&gt;
+&lt;p&gt;続いてデッドキーで出力される文字を設定していく。
+現在は出力される文字がないので、全体が暗い色で表示されている。&lt;/p&gt;
+
+&lt;h3 id="section-3"&gt;方法1.&lt;/h3&gt;
+&lt;p&gt;最初に、&lt;kbd&gt;&lt;kbd&gt;e&lt;/kbd&gt;&lt;/kbd&gt;を押すとɛが出力されるように設定してみる。
+今回は発音記号をmacの文字ビューアを使って入力していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00086_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;文字ビューアから使いたい文字をドラック＆ドロップすることで、簡単に出力キーを設定できる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00038_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;h3 id="section-4"&gt;方法2.&lt;/h3&gt;
+&lt;p&gt;次にdの位置にdʒを設定する。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00052_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;dキーをダブルクリックすると、ポップがでるので&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00087_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;手元のキーボードで&lt;kbd&gt;&lt;kbd&gt;d&lt;/kbd&gt;&lt;/kbd&gt;を入力、それから文字ビューアでʒをダブルクリックする。
+入力が終わったらDoneをクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00039_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;二文字目が設定できた。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00089_key2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;以上を繰り返して、各キーを設定していく。&lt;/p&gt;
+
+&lt;h3 id="shift"&gt;デッドキー+shiftキー&lt;/h3&gt;
+&lt;p&gt;少し操作が変わるのは、デッドキー+&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;&lt;/kbd&gt;の状態を設定したい場合。
+例えばこのキーボードでは、大文字のHを入力した時（&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;+&lt;kbd&gt;H&lt;/kbd&gt;&lt;/kbd&gt;）にɦを出力したい。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00088_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;この場合は&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;&lt;/kbd&gt;を押したまま、文字ビューアからɦをドラック＆ドロップするか、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00054_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;同じく&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;&lt;/kbd&gt;を押した状態でHをダブルクリックしてポップに入力する。&lt;/p&gt;
+
+&lt;h3 id="section-5"&gt;修飾キーの固定&lt;/h3&gt;
+&lt;p&gt;少しなら簡単だが、たくさんのキーをshiftの状態で設定したい時は、ずっと&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;&lt;/kbd&gt;を押しているのは大変。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00081_key4.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;そういう時は、ViewメニューからSticky Modifiersを選ぶと、もう一度&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;&lt;/kbd&gt;を押すまでshiftの状態を続けることができる。&lt;/p&gt;
+
+&lt;h2 id="section-6"&gt;配置を終了する&lt;/h2&gt;
+&lt;p&gt;全てのデッドキーを設定したら、デッドキーの状態から抜ける。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00090_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;KeyboardメニューからLeave Dead Key Stateを選ぶか、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00089_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;ツールバーのLeaveボタンを押す。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00091_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;通常の状態に戻りった。
+デッドキーは空欄で赤く表示されている。&lt;/p&gt;
+
+&lt;h3 id="section-7"&gt;現在の状態を確認する&lt;/h3&gt;
+&lt;p&gt;キーボードを編集している最中に、現在の状態（デッドキーや修飾キーのどれをいじっているか）を確認するには…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00091_key3.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;ツールバーのInfoボタンを押すか、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00081_key2-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;ViewメニューからShow Inspector（または&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;+&lt;kbd class="command"&gt;command&lt;/kbd&gt;+&lt;kbd&gt;I&lt;/kbd&gt;&lt;/kbd&gt;）を押すと、インスペクタ画面が表示される。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00032_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Current Modifiersでいま押されている修飾キー、State Stack（の一番上）でいま編集しているデッドキーの状態を確認できる。noneはデッドキーが選択されていない、通常の状態。&lt;/p&gt;
+
+&lt;h3 id="section-8"&gt;修飾キーごとのデッドキーの作成&lt;/h3&gt;
+&lt;p&gt;今回は作成しないが、&lt;kbd&gt;&lt;kbd class="shift"&gt;shift&lt;/kbd&gt;&lt;/kbd&gt;を押した状態や&lt;kbd&gt;&lt;kbd class="option"&gt;option&lt;/kbd&gt;&lt;/kbd&gt;を押した状態でもそれぞれデッドキーを作成できる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00043_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;（元にしたキーボードはoptionの状態で大量のデッドキーが設定されている）&lt;/p&gt;
+
+&lt;h2 id="section-9"&gt;既にあるデッドキーを編集する&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00091_key2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;一旦抜けたデッドキーの状態に入りたい場合・既にあるデッドキーを編集したい場合は、ツールバーのEnterをクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00045_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;プルダウンメニューから編集したいデッドキーを選んで&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00092_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;OKをクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00103_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;全ての配置が終了したら、キーボードの編集画面を閉じて、.bundleのウィンドウに戻る。
+FileメニューからSaveか&lt;kbd&gt;&lt;kbd class="command"&gt;command&lt;/kbd&gt;+&lt;kbd&gt;S&lt;/kbd&gt;&lt;/kbd&gt;で保存する。&lt;/p&gt;
+
+&lt;h2 id="section-10"&gt;レイアウトをインストールする&lt;/h2&gt;
+&lt;p&gt;完成したキーボードレイアウトを、インストールして使えるようにしていく。&lt;/p&gt;
+
+&lt;h3 id="section-11"&gt;方法1. 自分専用にインストールする&lt;/h3&gt;
+&lt;p&gt;自分だけで使うならこの方法が簡単。
+他の人にも共有したい場合は2の方法をとる必要がある。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00034_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;FileメニューのInstallからInstall for Current Userをクリックする。
+特に反応はないがちゃんとインストールされているはず。
+レイアウトを有効にするに飛ぶ→&lt;/p&gt;
+
+&lt;h3 id="section-12"&gt;方法2. ディスクイメージを作る&lt;/h3&gt;
+&lt;p&gt;こちらはキーボードレイアウトを含むディスクイメージを作る方法。
+他の人に共有できる他、自分用のインストールにも使える。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00034_key-3.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;FileメニューのInstallからExport Installer Disk Image…をクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00104_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;保存ダイアログが表示されるので、名前と保存先を指定して&lt;kbd&gt;&lt;samp&gt;Save&lt;/samp&gt;&lt;/kbd&gt;をクリック。保存先は好きな場所で大丈夫。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00058_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;指定した場所に.dmgファイルが生成される。
+.dmgをダブルクリックすると、新しいウィンドウが開く。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00059_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Drag here to installと書かれているフォルダに.bundleをドラック＆ドロップする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00060_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;このような画面が出るので&lt;kbd&gt;&lt;samp&gt;認証&lt;/samp&gt;&lt;/kbd&gt;をクリック、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00061_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;パスワードを入力してから&lt;kbd&gt;&lt;samp&gt;OK&lt;/samp&gt;&lt;/kbd&gt;をクリックする。
+キーボードレイアウトがインストールできた。&lt;/p&gt;
+
+&lt;h2 id="section-13"&gt;レイアウトを有効にする&lt;/h2&gt;
+&lt;p&gt;インストールが完了したら、一旦macのアカウント（ユーザ）からログアウトして再度ログインする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00062_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;システム環境設定からキーボードを選び、入力ソースタブの&lt;kbd&gt;&lt;samp&gt;＋&lt;/samp&gt;&lt;/kbd&gt;をクリックする。
+左に言語の一覧がある。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00073_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;今回は言語を英語に設定したので、英語の一番上に作成したキーボードが表示されている。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00074_key.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;目的のキーボードが見つからない場合は、左下の検索欄に名前を入力してみよう。
+ここではIPAko_USを選んで、追加をクリックする。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00028_key-2.jpg" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;あとは入力メニューから追加したキーボードを選択すれば、&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/Ukelele/ukelele-keylayout02/00067_key.png" alt="" /&gt;&lt;/p&gt;
+
+&lt;p&gt;オリジナルのキーボードで入力ができる！&lt;/p&gt;
+
+&lt;h2 id="section-14"&gt;レイアウトを削除する&lt;/h2&gt;
+&lt;p&gt;気が変わって（？）キーボードを削除したくなった時の方法：&lt;br /&gt;
+&lt;a href="keylayout-uninstall"&gt;Macから.keylayoutファイルをアンインストールする&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id="section-15"&gt;おわり&lt;/h2&gt;
+&lt;p&gt;Ukeleleの基本的な使い方は以上。
+他には修飾キーごとにレイアウトを変えられたりもする。
+今回紹介しきれなかった機能はこちら：
+&lt;a href=""&gt;準備中…&lt;/a&gt;&lt;/p&gt;
+</content>
+  </entry>
+</feed>

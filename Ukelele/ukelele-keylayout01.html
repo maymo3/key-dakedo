@@ -1,0 +1,241 @@
+<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta charset="utf-8"><meta content="ie=edge" http-equiv="X-UA-Compatible"><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"><title>UkeleleでMacのキーボード配列を作る(前編) - key dakedo</title><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="/assets/styles/normalize.css" rel="stylesheet" /><link href="/assets/styles/syntax.css" rel="stylesheet" /><link href="/assets/styles/style.css" rel="stylesheet" /><link href="https://fonts.googleapis.com/css?family=EB+Garamond&amp;display=swap" rel="stylesheet" /><link href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" rel="stylesheet" /><script src="/assets/js/jquery-3.4.1.min.js"></script></head><body><header class="header"><h1 class="logo"><a href="/">key dakedo</a></h1></header><div class="container"><div class="contents"><div class="main" id="main" role="main"><article class="article"><h1>UkeleleでMacのキーボード配列を作る(前編)</h1><time>2018-03-19</time><p><img src="/Ukelele/ukelele-keylayout01/ukulele01.png" alt="" /></p>
+
+<p>Ukeleleというアプリを使って、デッドキーを利用した簡単なキーボードレイアウトを作成してみる。</p>
+
+<ol id="markdown-toc">
+  <li><a href="#ukelele" id="markdown-toc-ukelele">Ukeleleをインストールする</a></li>
+  <li><a href="#section" id="markdown-toc-section">デザインする</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">始める</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">利用するキーボードのセットを開く</a>    <ol>
+      <li><a href="#section-3" id="markdown-toc-section-3">方法1</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">方法2</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">方法3</a></li>
+    </ol>
+  </li>
+  <li><a href="#section-6" id="markdown-toc-section-6">新しいレイアウトコレクションを作る</a></li>
+  <li><a href="#section-7" id="markdown-toc-section-7">名前を付ける</a></li>
+  <li><a href="#section-8" id="markdown-toc-section-8">言語を設定する</a></li>
+  <li><a href="#section-9" id="markdown-toc-section-9">アイコンを追加する</a></li>
+  <li><a href="#section-10" id="markdown-toc-section-10">名前を付けて保存</a></li>
+  <li><a href="#section-11" id="markdown-toc-section-11">つづく</a></li>
+</ol>
+
+<h2 id="ukelele">Ukeleleをインストールする</h2>
+
+<p>Ukeleleは以下のサイトから無料でダウンロード可能。</p>
+
+<p><a href="http://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&amp;id=ukelele">Ukelele</a></p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00006_key.jpg" alt="" /></p>
+
+<p>“Download”のすぐ下に最新のバージョンがあるので、クリックしてダウンロードする。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00007_key-2.jpg" alt="" /></p>
+
+<p>ダウンロードしたdmgファイルをダブルクリックして開く。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00008_key.jpg" alt="" /></p>
+
+<p>.appをApplicationsにドラック＆ドロップする。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00008_keycopy.png" alt="" /></p>
+
+<p>Resourcesフォルダにはレイアウトを作るときに元にできるキーボード配列や、チュートリアルが入っている。</p>
+
+<p>デスクトップなど好きな場所にコピーしておく。</p>
+
+<p>以上でインストール完了！</p>
+
+<h2 id="section">デザインする</h2>
+
+<p>キーボードを作り始める前に、まずはどんな配列にするか計画を立てる。<br />
+ここではQWERTY配列をベースに、デッドキーを使って発音記号が入力できるキーボードを作っていく。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/ipakouskey150-2.png" alt="" /></p>
+
+<p>配置はこんな感じ。一般的なQWERTY配列で、;をデッドキーにしている。</p>
+
+<h2 id="section-1">始める</h2>
+<p>ここからキーボードを作り始める。</p>
+
+<p>作りたいキーボードはQWERTY配列なので、Ukeleleに付いてきた「US Extended layout」を利用して作成していく。</p>
+
+<h2 id="section-2">利用するキーボードのセットを開く</h2>
+
+<p>最初に、キーボードの元になるファイルをUkeleleで開く。</p>
+
+<h3 id="section-3">方法1</h3>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00010_key.png" alt="" /></p>
+
+<p>コピーして置いたResourcesフォルダからStandard Keyboardsフォルダを開く。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00011_key.png" alt="" /></p>
+
+<p>Unicode.bundleを右クリックして、</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00046_key.jpg" alt="" /></p>
+
+<p>このアプリケーションで開くからその他…を選択</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00013_key.png" alt="" /></p>
+
+<p>Ukeleleを選んで開くをクリックする。</p>
+
+<h3 id="section-4">方法2</h3>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00100_key-2.jpg" alt="" /></p>
+
+<p>Ukeleleを起動する。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00002_key-2.jpg" alt="" /></p>
+
+<p>FileメニューからOpen…を選択</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00076_key.png" alt="" /></p>
+
+<p>Resourcesフォルダの中からStandard Keyboardsフォルダを開く。</p>
+
+<p>Unicode.bundleを選んで<kbd><samp>Open</samp></kbd>をクリックする。</p>
+
+<h3 id="section-5">方法3</h3>
+
+<p>コピーして置いたResourcesフォルダからStandard Keyboardsフォルダを開</p>
+
+<p>く。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00004_key-2.jpg" alt="" /></p>
+
+<p>UkeleleのアイコンにUnicode.bundleをドラッグ&amp;ドロップする。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00015_key.png" alt="" /></p>
+
+<p>Unicode.bundleのウィンドウが開いた。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00017_key.png" alt="" /></p>
+
+<p>一番下までスクロールして、US Extendedをクリックして選択した状態にしておく。</p>
+
+<h2 id="section-6">新しいレイアウトコレクションを作る</h2>
+
+<p>ここで、自分が編集する用の新しいコレクションを作成する。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00001_key.jpg" alt="" /></p>
+
+<p>FileメニューからNew Keyboard Collectionをクリックする。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00018_key.png" alt="" /></p>
+
+<p>新しいウィンドウが開いた。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00005_key.jpg" alt="" /></p>
+
+<p>このUntitledウィンドウに、US Extendedをドラック＆ドロップする。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00019_key.png" alt="" /></p>
+
+<p>US Extendedがコピーされた。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00101_key.png" alt="" /></p>
+
+<p>元のUnicode.bundleは直接編集しないので、ウィンドウを閉じて良い。</p>
+
+<h2 id="section-7">名前を付ける</h2>
+
+<p>次にキーボードレイアウトの名前を変更する。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00003_key.jpg" alt="" /></p>
+
+<p>US Extendedを右クリックして、Set Keyboard Name and Script…を選ぶ。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00021_key.png" alt="" /></p>
+
+<p>Nameに作成するキーボードの名前を入力し、ScriptはUnicodeのままで<kbd><samp>OK</samp></kbd>をクリックする。</p>
+
+<h2 id="section-8">言語を設定する</h2>
+
+<p>今度は言語の設定を行う。</p>
+
+<p>ここでは“en-US”をただの“en”に変更していく。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00022_key.png" alt="" /></p>
+
+<p>US Extendedを選択した状態で<kbd><samp>Launguage…</samp></kbd>をクリック。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00026_key.jpg" alt="" /></p>
+
+<p>LanguageはEnglishになっているのでそのままにして、Regionだけ削除する。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00000_key.jpg" alt="" /></p>
+
+<p><kbd><kbd class="command">command</kbd></kbd>を押しながらUnited Statesをクリックすると、Regionの選択が解除される。</p>
+
+<p><kbd><samp>OK</samp></kbd>をクリックして、元の画面に戻る。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00024_key.png" alt="" /></p>
+
+<p>言語が設定できた。</p>
+
+<h2 id="section-9">アイコンを追加する</h2>
+
+<p>続いてアイコンを追加する。</p>
+
+<p>使える画像は.iconsというmacのアイコン用形式。</p>
+
+<p>今回は「Image2icon」という無料アプリを使って、png画像を.iconsの形式に変換した。</p>
+
+<p><a href="https://itunes.apple.com/jp/app/image2icon-%E7%8B%AC%E8%87%AA%E3%81%AE%E3%82%A2%E3%82%A4%E3%82%B3%E3%83%B3%E3%82%92%E4%BD%9C%E3%82%8D%E3%81%86/id992115977?mt=12">「Image2icon - 独自のアイコンを作ろう」をMac App Storeで</a></p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00022_keycopy.png" alt="" /></p>
+
+<p>US Extendedを選択した状態で<kbd><samp>Icon…</samp></kbd>をクリック。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00075_key.jpg" alt="" /></p>
+
+<p>使いたいアイコンを選んで<kbd><samp>Open</samp></kbd>をクリックする。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00056_key.png" alt="" /></p>
+
+<p>アイコンの設定ができた。</p>
+
+<h2 id="section-10">名前を付けて保存</h2>
+
+<p>最後に、このレイアウトコレクションに名前をつけて保存する（現段階ではUntitledのままなので）。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00002_keycopy2-2.jpg" alt="" /></p>
+
+<p>FileメニューからSave…を選ぶか、<kbd><kbd class="command">command</kbd>+<kbd>S</kbd></kbd>を押す。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00070_key.jpg" alt="" /></p>
+
+<p>好きな名前を入力して、<kbd><samp>Save</samp></kbd>をクリックする。</p>
+
+<p>保存先（Where）は好きな場所でOK。</p>
+
+<p><img src="/Ukelele/ukelele-keylayout01/00102_key.png" alt="" /></p>
+
+<p>名前をつけて保存ができた。</p>
+
+<h2 id="section-11">つづく</h2>
+
+<p>キーボードレイアウトの設定は以上！</p>
+
+<p>次回からやっと配置を編集していく。</p>
+</article><div class="relateds"><aside class="related"><h2>同じカテゴリの記事</h2><ul><li><a href="/Ukelele/ukelele-keylayout02.html"><img src="/Ukelele/ukelele-keylayout02/00102_key.png" alt="00102 key" /><h3>UkeleleでMacのキーボード配列を作る(後編)</h3></a></li></ul></aside></div><div class="next-prev"><div class="nexts"><span class="arrow">＜</span><span class="next"><a href="/Ukelele/ukelele-keylayout02.html">UkeleleでMacのキーボード配列を作る(後編)</a></span></div><div class="prevs"></div></div></div><div class="side"><aside class="sideContent"><h2>Categories</h2><ul><li><a href="/categories/middleman.html">Middleman</a></li><li><a href="/categories/mac.html">Mac</a></li><li><a href="/categories/ukelele.html">Ukelele</a></li></ul></aside><aside class="sideContent"><h2>Recent Articles</h2><ol><li><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></li><li><a href="/Middleman/middleman-setting.html">middleman-blogの設定</a></li><li><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></li><li><a href="/Mac/keylayout-uninstall.html">Macから.keylayoutファイルをアンインストールする</a></li><li><a href="/Mac/keylayout-install.html">Macに.keylayoutファイルをインストールする</a></li></ol></aside><aside class="sideToc"><h2>Contents</h2><ol id="markdown-toc">
+  <li><a href="#ukelele" id="markdown-toc-ukelele">Ukeleleをインストールする</a></li>
+  <li><a href="#section" id="markdown-toc-section">デザインする</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">始める</a></li>
+  <li>
+<a href="#section-2" id="markdown-toc-section-2">利用するキーボードのセットを開く</a>    <ol>
+      <li><a href="#section-3" id="markdown-toc-section-3">方法1</a></li>
+      <li><a href="#section-4" id="markdown-toc-section-4">方法2</a></li>
+      <li><a href="#section-5" id="markdown-toc-section-5">方法3</a></li>
+    </ol>
+  </li>
+  <li><a href="#section-6" id="markdown-toc-section-6">新しいレイアウトコレクションを作る</a></li>
+  <li><a href="#section-7" id="markdown-toc-section-7">名前を付ける</a></li>
+  <li><a href="#section-8" id="markdown-toc-section-8">言語を設定する</a></li>
+  <li><a href="#section-9" id="markdown-toc-section-9">アイコンを追加する</a></li>
+  <li><a href="#section-10" id="markdown-toc-section-10">名前を付けて保存</a></li>
+  <li><a href="#section-11" id="markdown-toc-section-11">つづく</a></li>
+</ol></aside></div></div></div><div class="top-btn" id="top-btn"><img src="/assets/img/arrow01.png" alt="Arrow01" /></div><footer class="footer"></footer><script src="/assets/js/script.js"></script></body></html>

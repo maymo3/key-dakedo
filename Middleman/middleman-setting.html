@@ -1,0 +1,194 @@
+<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta charset="utf-8"><meta content="ie=edge" http-equiv="X-UA-Compatible"><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"><title>middleman-blogの設定 - key dakedo</title><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="/assets/styles/normalize.css" rel="stylesheet" /><link href="/assets/styles/syntax.css" rel="stylesheet" /><link href="/assets/styles/style.css" rel="stylesheet" /><link href="https://fonts.googleapis.com/css?family=EB+Garamond&amp;display=swap" rel="stylesheet" /><link href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" rel="stylesheet" /><script src="/assets/js/jquery-3.4.1.min.js"></script></head><body><header class="header"><h1 class="logo"><a href="/">key dakedo</a></h1></header><div class="container"><div class="contents"><div class="main" id="main" role="main"><article class="article"><h1>middleman-blogの設定</h1><time>2020-03-12</time><ol id="markdown-toc">
+  <li><a href="#gem" id="markdown-toc-gem">gemとして入れた便利機能を使う設定</a></li>
+  <li><a href="#css" id="markdown-toc-css">CSSなどのフォルダが無いので作る</a></li>
+  <li><a href="#section" id="markdown-toc-section">ブログについての設定</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">記事を置く場所を変える</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">パーマリンクの設定</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">記事ごとに添付ファイルを分けて置く</a></li>
+  <li><a href="#markdown" id="markdown-toc-markdown">記事をmarkdownで書く</a></li>
+</ol>
+
+<ul class="tree">
+	<li class="folder">My Project
+		<ul>
+			<li class="file">Gemfile -------&gt; installするgemの一覧</li>
+			<li class="file">Gemfile.lock --&gt; installしたgemの一覧</li>
+			<li class="file">config.rb -----&gt; 設定を書く</li>
+			<li class="folder">source</li>
+			<li class="folder">vendor --------&gt; installしたgemが入る</li>
+		</ul>
+	</li>
+</ul>
+
+<p>プロジェクトフォルダの中身はこんな感じ。sourceにはhtmlとその進化系、cssとその進化系、javascript、画像、あとレイアウト(〇〇.erb、〇〇.slim)など最終的に変換されて作っているブログの表示内容になるファイルを入れる。</p>
+
+<p>ここからは設定用のファイルconfig.rbをいじっていく。
+サーバを立ち上げて</p>
+
+<p class="code-lang">ターミナル</p>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>bundle <span class="nb">exec </span>middleman server
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>http://localhost:4567/__middleman/config/
+</code></pre></div><p>にアクセスすると設定できる対象や拡張機能を確認できる。</p>
+
+<h2 id="gem">gemとして入れた便利機能を使う設定</h2>
+<p class="code-lang">config.rbに追記</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="c1"># 自動読み込みをさせる</span>
+<span class="n">activate</span> <span class="ss">:livereload</span>
+<span class="c1"># slimを読み込む</span>
+<span class="nb">require</span> <span class="s1">'slim'</span>
+</code></pre></div>
+<h2 id="css">CSSなどのフォルダが無いので作る</h2>
+<p>単独のmiddlemanなら元から作られていたのだけど。</p>
+
+<ul class="tree">
+	<li class="folder">source
+		<ul>
+			<li class="folder">assets
+				<ul>
+					<li class="folder">img
+						<ul>
+							<li class="file">thumbnail01.png</li>
+							<li>︙</li>
+						</ul>
+					</li>
+					<li class="folder">js
+						<ul>
+							<li class="file">script.js</li>
+							<li>︙</li>
+						</ul>
+					</li>
+					<li class="folder">styles
+						<ul>
+							<li class="file">style.css.sass</li>
+							<li>︙</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<p>まずsourceディレクトリの中に静的ファイルをまとめるassetsディレクトリを作る。その中に画像、JavaScript、CSSのそれぞれのファイルをまとめるimg、js、styles各ディレクトリを作る。</p>
+
+<p>次に各ディレクトリの名前と場所を設定に追加する。</p>
+
+<p class="code-lang">config.rbに追記</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="n">config</span><span class="p">[</span><span class="ss">:css_dir</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'assets/styles'</span>
+<span class="n">config</span><span class="p">[</span><span class="ss">:js_dir</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'assets/js'</span>
+<span class="n">config</span><span class="p">[</span><span class="ss">:images_dir</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'assets/img'</span>
+</code></pre></div>
+<h2 id="section">ブログについての設定</h2>
+<p>以降はconfig.rbにブログとしての設定を加えていく。</p>
+
+<p><img src="/Middleman/middleman-setting/setting02.png" alt="" /></p>
+
+<p>元々<code>activate :blog do |blog|</code>から<code>end</code>の間に設定例が書いてあるので、そのコメントを外して設定内容を書くか、<code>end</code>の前に追記していく。</p>
+
+<h2 id="section-1">記事を置く場所を変える</h2>
+<p>参考：<a href="http://whiskers.nukos.kitchen/2015/03/02/middleman-blog-article-path.html">http://whiskers.nukos.kitchen/2015/03/02/middleman-blog-article-path.html</a></p>
+
+<p>デフォルトだとsouce直下に記事を置くことになり、数が増えてくるとヤバそうなのでsouce内に記事をまとめるディレクトリを作る。</p>
+
+<ul class="tree">
+	<li class="folder">source
+		<ul>
+			<li class="folder">articles
+				<ul>
+					<li class="folder">category1
+						<ul>
+							<li class="file">2020-03-03-post1.html.markdown</li>
+							<li>︙</li>
+						</ul>
+					</li>
+					<li class="folder">category2
+						<ul>
+							<li class="file">2020-03-05-post2.html.markdown</li>
+							<li>︙</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<p>ここではarticlesディレクトリの下に各カテゴリのディレクトリをおき、その中に記事を入れる。</p>
+
+<p class="code-lang">config.rb 34行目付近</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="c1"># blog.sources = "{year}-{month}-{day}-{title}.html"</span>
+</code></pre></div><p>のコメントを外して</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="n">blog</span><span class="p">.</span><span class="nf">sources</span> <span class="o">=</span> <span class="s2">"articles/{category}/{year}-{month}-{day}-{title}.html"</span>
+</code></pre></div><p>にする。</p>
+
+<p><img src="/Middleman/middleman-setting/setting03.png" alt="" /></p>
+
+<p>設定した置き場所とファイル名の形式で、middlemanくんが「これが記事やな」って認識してくれる。</p>
+
+<h2 id="section-2">パーマリンクの設定</h2>
+<p>各記事をあらわすURLの後ろの部分の書式を設定する。</p>
+
+<p><img src="/Middleman/middleman-setting/setting04.png" alt="" /></p>
+
+<p class="code-lang">config.rb 32行目付近</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="c1"># blog.permalink = "{year}/{month}/{day}/{title}.html"</span>
+</code></pre></div><p>のコメントを外して</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="n">blog</span><span class="p">.</span><span class="nf">permalink</span> <span class="o">=</span> <span class="s2">"/{category}/{title}.html"</span>
+</code></pre></div><p>今回は"~/カテゴリ/タイトル"にする。</p>
+
+<p>以上2つ（記事を置く場所とパーマリンク）の設定で各記事のFrontmatter（後述）でcategoryを指定しなくても、自動でフォルダ名のカテゴリの記事として扱われる。</p>
+
+<h2 id="section-3">記事ごとに添付ファイルを分けて置く</h2>
+<p>例えば記事ごとに画像を分けて置きたい場合。これは特に設定はいらないが、記事と同じディレクトリに、記事と同じ名前のフォルダを作る。<br />
+記事内で画像だったら</p>
+
+<div class="highlight"><pre class="highlight markdown"><code><span class="p">![](</span><span class="sx">記事名/ファイル名</span><span class="p">)</span>
+</code></pre></div><p>のように呼び出す。<br />
+例</p>
+
+<ul class="tree">
+	<li class="folder">articles
+		<ul>
+			<li class="folder">category1
+				<ul>
+					<li class="folder">2020-03-12-middleman
+						<ul>
+							<li class="file">figure01.png</li>
+							<li>︙</li>
+						</ul>
+					</li>
+					<li class="file">2020-03-12-middleman.markdown</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<p>呼び出し時は</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>#[](2020-03-12-middleman/figure01.png)
+</code></pre></div><p>みたいな感じ。</p>
+
+<h2 id="markdown">記事をmarkdownで書く</h2>
+<p>だいたい設定もできたところで表示確認用に1、2コ記事をおいておくと良い。適当に見出しの入ってるやつ。</p>
+
+<p>ここでの設定による記事のファイル名の形式は</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code>2020-03-08-title1.html.markdown
+</code></pre></div><p>途中の<code>.html</code>を忘れないように注意。</p>
+</article><div class="relateds"><aside class="related"><h2>同じカテゴリの記事</h2><ul><li><a href="/Middleman/middleman-article.html"><img src="/Middleman/middleman-article/article02.png" alt="Article02" /><h3>middleman-blogで記事部分の表示を作る</h3></a></li><li><a href="/Middleman/middleman-introduction.html"><img src="/Middleman/middleman-introduction/introduction01.png" alt="Introduction01" /><h3>middleman-blogを使ってブログを作る</h3></a></li></ul></aside></div><div class="next-prev"><div class="nexts"><span class="arrow">＜</span><span class="next"><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></span></div><div class="prevs"><span class="prev"><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></span><span class="arrow">＞</span></div></div></div><div class="side"><aside class="sideContent"><h2>Categories</h2><ul><li><a href="/categories/middleman.html">Middleman</a></li><li><a href="/categories/mac.html">Mac</a></li><li><a href="/categories/ukelele.html">Ukelele</a></li></ul></aside><aside class="sideContent"><h2>Recent Articles</h2><ol><li><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></li><li><a href="/Middleman/middleman-setting.html">middleman-blogの設定</a></li><li><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></li><li><a href="/Mac/keylayout-uninstall.html">Macから.keylayoutファイルをアンインストールする</a></li><li><a href="/Mac/keylayout-install.html">Macに.keylayoutファイルをインストールする</a></li></ol></aside><aside class="sideToc"><h2>Contents</h2><ol id="markdown-toc">
+  <li><a href="#gem" id="markdown-toc-gem">gemとして入れた便利機能を使う設定</a></li>
+  <li><a href="#css" id="markdown-toc-css">CSSなどのフォルダが無いので作る</a></li>
+  <li><a href="#section" id="markdown-toc-section">ブログについての設定</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">記事を置く場所を変える</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">パーマリンクの設定</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">記事ごとに添付ファイルを分けて置く</a></li>
+  <li><a href="#markdown" id="markdown-toc-markdown">記事をmarkdownで書く</a></li>
+</ol></aside></div></div></div><div class="top-btn" id="top-btn"><img src="/assets/img/arrow01.png" alt="Arrow01" /></div><footer class="footer"></footer><script src="/assets/js/script.js"></script></body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"><meta charset="utf-8"><meta content="ie=edge" http-equiv="X-UA-Compatible"><meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"><title>middleman-blogを使ってブログを作る - key dakedo</title><link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" /><link href="/assets/styles/normalize.css" rel="stylesheet" /><link href="/assets/styles/syntax.css" rel="stylesheet" /><link href="/assets/styles/style.css" rel="stylesheet" /><link href="https://fonts.googleapis.com/css?family=EB+Garamond&amp;display=swap" rel="stylesheet" /><link href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" rel="stylesheet" /><script src="/assets/js/jquery-3.4.1.min.js"></script></head><body><header class="header"><h1 class="logo"><a href="/">key dakedo</a></h1></header><div class="container"><div class="contents"><div class="main" id="main" role="main"><article class="article"><h1>middleman-blogを使ってブログを作る</h1><time>2020-03-11</time><p><img src="/Middleman/middleman-introduction/introduction01.png" alt="" /></p>
+
+<p>middlemanとmiddleman-blogというmiddlemanの公式拡張機能を利用して、ブログを作ってみる。</p>
+
+<ol id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">こんな状況</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">環境</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">前準備</a></li>
+  <li><a href="#gemfilegem" id="markdown-toc-gemfilegem">Gemfileに必要なgemを追加</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">プレビューできるか確認</a></li>
+</ol>
+
+<h2 id="section">こんな状況</h2>
+<ul>
+  <li>sinatra、Railsを勉強したいけれどその前にワンステップ欲しい</li>
+  <li>HTML、CSS、JQuery(JavaScript)などを勉強していて、とりあえず自分のサイトを作ってみたい</li>
+  <li>けど同じHTMLを繰り返しコピペするとかは絶対にやりたくない</li>
+  <li>お試しなのでお金をかけずに(サーバを借りたりせずに)サイトを公開したい</li>
+</ul>
+
+<p>→middlemanを使おう！</p>
+
+<p>初心者が「自分はこう理解した」「こうやってみたらできた」ことを書いていく。<br />
+賢いやり方や詳しい紹介はもっと他にあると思うが、middlemanって何だ？って感じの人に「こんなことができるんだ」と知ってほしい。<br />
+あと先人たちの素晴らしい記事にリンクを貼るので、それらの記事が検索上位で見つかるようになってほしい…。</p>
+
+<p>参考：3回に分けてmiddlemanの使い方が書いてあるページ<br />
+<a href="http://creator.dwango.co.jp/976.html">http://creator.dwango.co.jp/976.html</a></p>
+
+<h2 id="section-1">環境</h2>
+<ul>
+  <li>CentOS/7</li>
+  <li>Ruby 2.7.0</li>
+  <li>middleman 4.6.3</li>
+  <li>勉強したいのでslim、sass記法(scss記法ではない)を使う</li>
+  <li>作るもの→このブログ</li>
+</ul>
+
+<h2 id="section-2">前準備</h2>
+<p>インストールについては下記のサイトが親切だったのでそちらを参考に。<br />
+<a href="https://birdwing3.com/201511234/">https://birdwing3.com/201511234/</a></p>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>bundle <span class="nb">exec </span>middleman init <span class="nt">--template</span><span class="o">=</span>blog
+</code></pre></div>
+<p>でmiddleman起動した後からのつづき</p>
+
+<h2 id="gemfilegem">Gemfileに必要なgemを追加</h2>
+
+<p class="code-lang">Gemfileに追記</p>
+
+<div class="highlight"><pre class="highlight plaintext"><code># これらがないとエラーが出る
+gem 'middleman-autoprefixer', '~&gt; 2.7'
+gem 'middleman-cli'
+gem "middleman-core"
+# ファイルを更新したら自動で再読み込みしてくれるやつ
+gem 'middleman-livereload'
+# slimの導入
+gem 'slim'
+# nokogiriの導入
+gem 'nokogiri'
+</code></pre></div>
+<p>今回はerbではなくslimで書いていきたいのでslimもリストアップ。<br />
+記事の一覧表示にサムネイルや記事の冒頭部を表示したい場合はnokogiriも書いておく。</p>
+
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>bundle <span class="nb">install</span>
+</code></pre></div><p>でGemfileの中身をインストールする。</p>
+
+<p>追加の機能は最初に全部入れなくても、後からGemfileに書いて<code>$bundle install</code>すればOK。</p>
+
+<h2 id="section-3">プレビューできるか確認</h2>
+<div class="highlight"><pre class="highlight shell"><code><span class="nv">$ </span>bundle <span class="nb">exec </span>middleman server
+</code></pre></div><p>でプレビュー用に用意されたmiddlemanのサーバを起動する。<br />
+<code>http://localhost:4567/</code>にアクセスして表示されるか確認。<br />
+ipアドレスが設定してある時は<code>http://192.168.33.10:4567/</code>など。<br />
+<kbd><kbd class="control">control</kbd>+<kbd>C</kbd></kbd>でサーバを閉じる</p>
+
+<p>自分で設定をいじっていくときは、</p>
+
+<ol>
+  <li>設定を変える</li>
+  <li>サーバを起動（この時点で設定がおかしい時はエラーが出る）</li>
+  <li>変更を加えたページなどの表示を確認</li>
+  <li>サーバを閉じる</li>
+</ol>
+
+<p>の繰り返し。</p>
+</article><div class="relateds"><aside class="related"><h2>同じカテゴリの記事</h2><ul><li><a href="/Middleman/middleman-article.html"><img src="/Middleman/middleman-article/article02.png" alt="Article02" /><h3>middleman-blogで記事部分の表示を作る</h3></a></li><li><a href="/Middleman/middleman-setting.html"><img src="/Middleman/middleman-setting/setting02.png" alt="Setting02" /><h3>middleman-blogの設定</h3></a></li></ul></aside></div><div class="next-prev"><div class="nexts"><span class="arrow">＜</span><span class="next"><a href="/Middleman/middleman-setting.html">middleman-blogの設定</a></span></div><div class="prevs"><span class="prev"><a href="/Mac/keylayout-uninstall.html">Macから.keylayoutファイルをアンインストールする</a></span><span class="arrow">＞</span></div></div></div><div class="side"><aside class="sideContent"><h2>Categories</h2><ul><li><a href="/categories/middleman.html">Middleman</a></li><li><a href="/categories/mac.html">Mac</a></li><li><a href="/categories/ukelele.html">Ukelele</a></li></ul></aside><aside class="sideContent"><h2>Recent Articles</h2><ol><li><a href="/Middleman/middleman-article.html">middleman-blogで記事部分の表示を作る</a></li><li><a href="/Middleman/middleman-setting.html">middleman-blogの設定</a></li><li><a href="/Middleman/middleman-introduction.html">middleman-blogを使ってブログを作る</a></li><li><a href="/Mac/keylayout-uninstall.html">Macから.keylayoutファイルをアンインストールする</a></li><li><a href="/Mac/keylayout-install.html">Macに.keylayoutファイルをインストールする</a></li></ol></aside><aside class="sideToc"><h2>Contents</h2><ol id="markdown-toc">
+  <li><a href="#section" id="markdown-toc-section">こんな状況</a></li>
+  <li><a href="#section-1" id="markdown-toc-section-1">環境</a></li>
+  <li><a href="#section-2" id="markdown-toc-section-2">前準備</a></li>
+  <li><a href="#gemfilegem" id="markdown-toc-gemfilegem">Gemfileに必要なgemを追加</a></li>
+  <li><a href="#section-3" id="markdown-toc-section-3">プレビューできるか確認</a></li>
+</ol></aside></div></div></div><div class="top-btn" id="top-btn"><img src="/assets/img/arrow01.png" alt="Arrow01" /></div><footer class="footer"></footer><script src="/assets/js/script.js"></script></body></html>
