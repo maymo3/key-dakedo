@@ -186,7 +186,7 @@ layoutsディレクトリの中に新しくarticle.slimを作る。（名前は�
     <link rel="alternate" href="https://github.com/Middleman/middleman-setting.html"/>
     <id>https://github.com/Middleman/middleman-setting.html</id>
     <published>2020-03-12T09:00:00+09:00</published>
-    <updated>2020-03-18T00:34:51+09:00</updated>
+    <updated>2020-03-18T01:26:42+09:00</updated>
     <author>
       <name>maymo3</name>
     </author>
@@ -236,7 +236,7 @@ layoutsディレクトリの中に新しくarticle.slimを作る。（名前は�
 
 &lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# activate :livereload&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;コメントを外して（#を削除して）設定を有効にする。下のようになる。&lt;/p&gt;
+&lt;p&gt;コメントを外して（#を削除して）設定を有効にする。下記のようになる。&lt;/p&gt;
 
 &lt;p class="code-lang"&gt;config.rb&lt;/p&gt;
 

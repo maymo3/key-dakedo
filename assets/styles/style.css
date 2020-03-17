@@ -131,7 +131,7 @@ li {
     display: inline-block;
     width: 25vmin;
     height: 25vmin;
-    background-image: url(/key-dakedo/assets/img/sitting.png);
+    background-image: url(/assets/img/sitting.png);
     background-size: contain;
     position: absolute;
     bottom: 0.5rem;
@@ -482,7 +482,7 @@ ul.tree {
     display: block;
     width: 7em;
     height: 7em;
-    background-image: url(/key-dakedo/assets/img/rabbit02.png);
+    background-image: url(/assets/img/rabbit02.png);
     background-size: contain;
     background-repeat: no-repeat;
     position: -webkit-sticky;
