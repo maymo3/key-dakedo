@@ -32,12 +32,32 @@
 </code></pre></div><p>にアクセスすると設定できる対象や拡張機能を確認できる。</p>
 
 <h2 id="gem">gemとして入れた便利機能を使う設定</h2>
+<p>自動再読み込みなど、開発時のみ有効にしたい機能は<code>configure :development do</code>から<code>end</code>の間に書く。</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="n">configure</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="c1"># ここに開発時のみの設定</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>そこにたぶん以下のような設定例があるので</p>
+
+<p class="code-lang">config.rb</p>
+
+<div class="highlight"><pre class="highlight ruby"><code>  <span class="c1"># activate :livereload</span>
+</code></pre></div>
+<p>コメントを外して（#を削除して）設定を有効にする。下のようになる。</p>
+
+<p class="code-lang">config.rb</p>
+
+<div class="highlight"><pre class="highlight ruby"><code><span class="c1"># Reload the browser automatically whenever files change</span>
+<span class="n">configure</span> <span class="ss">:development</span> <span class="k">do</span>
+  <span class="n">activate</span> <span class="ss">:livereload</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>それから今回はslimを使うのでslimを読み込む。config.rbの好きな場所（最後とか）に追加すれば良い。</p>
+
 <p class="code-lang">config.rbに追記</p>
 
-<div class="highlight"><pre class="highlight ruby"><code><span class="c1"># 自動読み込みをさせる</span>
-<span class="n">activate</span> <span class="ss">:livereload</span>
-<span class="c1"># slimを読み込む</span>
-<span class="nb">require</span> <span class="s1">'slim'</span>
+<div class="highlight"><pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'slim'</span>
 </code></pre></div>
 <h2 id="css">CSSなどのフォルダが無いので作る</h2>
 <p>単独のmiddlemanなら元から作られていたのだけど。</p>

@@ -1,20 +1,31 @@
 $(function() {
-	var topBtn = $('#top-btn');
-		// 300スクロールしたら戻るボタンを出す
-	$(window).scroll(function(){
-		if ($(this).scrollTop() > 300) {
-			topBtn.fadeIn(500);
+
+	var $topBtn = $('#top-btn');
+	$topBtn.css("display","none");
+
+	$(window).on('load resize',function(){
+		var w = $(window).width();
+		if (w >= 768) {
+				// 300スクロールしたら戻るボタンを出す
+			$(window).scroll(function(){
+				if ($(this).scrollTop() > 300) {
+					$topBtn.fadeIn(500);
+				} else {
+					$topBtn.fadeOut(500);
+				}
+			});
+				// 戻るボタンをクリックしたらトップに戻る
+			$topBtn.click(function(){
+				$('html,body').animate({
+					scrollTop: 0
+				},800);
+				return false;
+			});
 		} else {
-			topBtn.fadeOut(500);
+			$topBtn.css("display","none");
 		}
-	});
-		// 戻るボタンをクリックしたらトップに戻る
-	topBtn.click(function(){
-		$('html,body').animate({
-			scrollTop: 0
-		},800);
-		return false;
-	});
+});
+	
 	
 	function makeToc() {
 		$('#markdown-toc li').click(function(){

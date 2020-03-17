@@ -186,7 +186,7 @@ layoutsディレクトリの中に新しくarticle.slimを作る。（名前は�
     <link rel="alternate" href="https://github.com/Middleman/middleman-setting.html"/>
     <id>https://github.com/Middleman/middleman-setting.html</id>
     <published>2020-03-12T09:00:00+09:00</published>
-    <updated>2020-03-17T04:52:44+09:00</updated>
+    <updated>2020-03-18T00:34:51+09:00</updated>
     <author>
       <name>maymo3</name>
     </author>
@@ -224,12 +224,32 @@ layoutsディレクトリの中に新しくarticle.slimを作る。（名前は�
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;にアクセスすると設定できる対象や拡張機能を確認できる。&lt;/p&gt;
 
 &lt;h2 id="gem"&gt;gemとして入れた便利機能を使う設定&lt;/h2&gt;
+&lt;p&gt;自動再読み込みなど、開発時のみ有効にしたい機能は&lt;code&gt;configure :development do&lt;/code&gt;から&lt;code&gt;end&lt;/code&gt;の間に書く。&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="n"&gt;configure&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="c1"&gt;# ここに開発時のみの設定&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;そこにたぶん以下のような設定例があるので&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rb&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;  &lt;span class="c1"&gt;# activate :livereload&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;コメントを外して（#を削除して）設定を有効にする。下のようになる。&lt;/p&gt;
+
+&lt;p class="code-lang"&gt;config.rb&lt;/p&gt;
+
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# Reload the browser automatically whenever files change&lt;/span&gt;
+&lt;span class="n"&gt;configure&lt;/span&gt; &lt;span class="ss"&gt;:development&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  &lt;span class="n"&gt;activate&lt;/span&gt; &lt;span class="ss"&gt;:livereload&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;それから今回はslimを使うのでslimを読み込む。config.rbの好きな場所（最後とか）に追加すれば良い。&lt;/p&gt;
+
 &lt;p class="code-lang"&gt;config.rbに追記&lt;/p&gt;
 
-&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="c1"&gt;# 自動読み込みをさせる&lt;/span&gt;
-&lt;span class="n"&gt;activate&lt;/span&gt; &lt;span class="ss"&gt;:livereload&lt;/span&gt;
-&lt;span class="c1"&gt;# slimを読み込む&lt;/span&gt;
-&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'slim'&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre class="highlight ruby"&gt;&lt;code&gt;&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;'slim'&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id="css"&gt;CSSなどのフォルダが無いので作る&lt;/h2&gt;
 &lt;p&gt;単独のmiddlemanなら元から作られていたのだけど。&lt;/p&gt;
