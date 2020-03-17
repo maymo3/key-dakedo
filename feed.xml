@@ -632,7 +632,7 @@ ipアドレスが設定してある時は&lt;code&gt;http://192.168.33.10:4567/&
     <content type="html">&lt;p&gt;Ukeleleで簡単なキーボードレイアウトを作る記事の後編。&lt;/p&gt;
 
 &lt;p&gt;前編はこちら：&lt;br /&gt;
-&lt;a href="/Ukelele/ukelele-keylayout01.html"&gt;UkeleleでMacのキーボード配列を作る(前編)&lt;/a&gt;&lt;/p&gt;
+&lt;a href="ukelele-keylayout01.html"&gt;UkeleleでMacのキーボード配列を作る(前編)&lt;/a&gt;&lt;/p&gt;
 
 &lt;ol id="markdown-toc"&gt;
   &lt;li&gt;&lt;a href="#section" id="markdown-toc-section"&gt;配置を編集する&lt;/a&gt;&lt;/li&gt;
